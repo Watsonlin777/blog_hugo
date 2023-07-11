@@ -38,6 +38,9 @@ jobs:
     - name: Set permissions for SSH directory and key
       run: chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
 
+    - name: check key
+      run: cat ~/.ssh/id_rsa
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:

@@ -16,3 +16,4 @@ jobs:
       - name: Build and deploy
         run: |
           ./hugo.exe --theme maupassant --minify
+          cp -r public/* docs/

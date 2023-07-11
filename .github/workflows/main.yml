@@ -1,24 +1,35 @@
-name: Deploy to GitHub Pages
+name: github pages
 
 on:
   push:
     branches:
-      - master
+      - source
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build-deploy:
+    runs-on: ubuntu-18.04
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      
-      - name: Set up Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.83.1'
-      
-      - name: Build and deploy
-        run: |
-          hugo --theme maupassant --minify
-          cp -r public/* docs/
+    - uses: actions/checkout@master
+    - name: Checkout submodules
+      shell: bash
+      run: |
+        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+        git submodule sync --recursive
+        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: 'latest'
+        extended: true
+
+    - name: Build
+      run: hugo --theme maupassant --minify --cleanDestinationDir
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_dir: ./public
+        publish_branch: master

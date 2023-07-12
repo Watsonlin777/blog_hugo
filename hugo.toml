@@ -1,4 +1,5 @@
 baseURL = 'http://example.org/'
-languageCode = 'zh-CN'
+languageCode = 'zh'
 title = 'WATSON BLOG'
 theme = 'maupassant'
+defaultcontentlanguage = 'zh'

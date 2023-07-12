@@ -51,6 +51,6 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
-        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        BRANCH: master # 指定要部署到的分支
-        FOLDER: public # 指定要部署的文件夹路径
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: master
+        FOLDER: public 
